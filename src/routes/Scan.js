@@ -5,7 +5,11 @@ export const Scan = () => {
   const [result, setResult] = useState("");
   const { ref } = useZxing({
     onResult(result) {
-      setResult(result.getText());
+      if (result.getText().length !== 8) {
+        setResult("無効なUIDです。");
+      } else {
+        setResult(result.getText());
+      }
     },
   });
   return (
