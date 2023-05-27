@@ -14,14 +14,17 @@ export const Scan = () => {
         //setResult(result.getText());
         (async() => {
           //const a = await checkUID(result);
-          navigate('/temp', {state: { UID: result } });
+          navigate(`/temp/${result}`, { state: { isValid: true } });
         })();
       }
     },
   });
   /*
   const checkUID = () => {
-    fetch("url")
+    fetch("url", {
+      method: "POST",
+      body: data
+    })
       .then(res => res.json())
       .then(
         (result) => {
