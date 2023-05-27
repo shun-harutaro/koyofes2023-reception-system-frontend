@@ -1,22 +1,59 @@
 import React, { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 
-export const Temp = ({ message }) => {
+export const Temp = () => {
+    const params = useParams();
     const navigate = useNavigate();
+    const location = useLocation();
+    console.log(location);
     const [ temp, setTemp ] = useState('');
+    const [ errors, setErrors ] = useState({
+        content: '',
+        isError: true,
+    });
     const handleTextChange = (event) => {
-        setTemp(event.target.value);
+        const currentVal = event.target.value;
+        setTemp(currentVal);
+        formValidation(currentVal);
     };
     const handleSubmit = () => {
         console.log(temp);
-        navigate('/', {state: {message: '成功',type: 'success'}});
+        navigate('/');
+    };
+    const formValidation = (value) => {
+        const valueNum = parseFloat(value);
+        if (!value.match(/^[0-9]+(\.[0-9]?)?$/)) {
+            setErrors({...errors, content: '不適切な形式です'});
+        } else if (valueNum < 34 || 41 < valueNum) {
+            setErrors({...errors, content: '体温は34から41の範囲で入力してください'})
+        } else {
+            setErrors({...errors, content: ''});
+        }
     }
-
+    /*
+    const sendTemp = () => {
+        fetch("url", {
+            method: "POST",
+            body: data
+        }).then((res) => {
+            success
+        }).catch((err) => {
+            error
+        });
+    }
+    */
+   if (location.state !== null) {
     return (
         <div>
-            <p>Temp {message}</p>
+            <p>UID: { params.uid }</p>
+            <p>{ errors.content }</p>
             <input type="text" value={temp} onChange={handleTextChange} />
             <button onClick={handleSubmit}>submit</button>
         </div>
     )
+   } else {
+    return (
+        <p>UID is not valid</p>
+    )
+   }
 }
