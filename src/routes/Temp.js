@@ -1,20 +1,20 @@
 import React, { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 
-export const Temp = ({ message }) => {
-    const navigate = useNavigate();
+export const Temp = () => {
+    const location = useLocation();
+    console.log(location.state.UID.text);
     const [ temp, setTemp ] = useState('');
     const handleTextChange = (event) => {
         setTemp(event.target.value);
     };
     const handleSubmit = () => {
         console.log(temp);
-        navigate('/', {state: {message: '成功',type: 'success'}});
     }
 
     return (
         <div>
-            <p>Temp {message}</p>
+            <p>Temp {location.state.UID.text}</p>
             <input type="text" value={temp} onChange={handleTextChange} />
             <button onClick={handleSubmit}>submit</button>
         </div>
