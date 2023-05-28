@@ -13,29 +13,35 @@ export const Scan = () => {
       } else {
         //setResult(result.getText());
         (async() => {
-          //const a = await checkUID(result);
-          navigate(`/temp/${result}`, { state: { isValid: true } });
+          const isValid = await checkUID(result);
+          if (isValid) {
+            navigate(`/temp/${result}`, { state: { isValid: true } });
+          } else {
+            navigate(`/`, { state: { isValid: false} });
+          }
         })();
       }
     },
   });
-  /*
-  const checkUID = () => {
-    fetch("url", {
-      method: "POST",
-      body: data
+  const checkUID = (challengeUID) => {
+    fetch(process.env.REACT_APP_API_URL, {
+      method: "GET",
+      uid: challengeUID,
     })
       .then(res => res.json())
       .then(
-        (result) => {
-          setIsValid(true);
-        },
-        (error) => {
-          /* TODO: error handling 
+        (data) => {
+          //setIsValid(true);
+          console.log(data);
+          return true
         }
       )
-  }
-  */
+      .catch((err) => {
+        console.log(err);
+        return false;
+        }
+      )
+  };
   return (
     <>
       <video ref={ref} />
