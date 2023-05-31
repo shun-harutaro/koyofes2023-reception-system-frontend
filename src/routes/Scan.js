@@ -23,21 +23,23 @@ export const Scan = () => {
       }
     },
   });
+
   const checkUID = (challengeUID) => {
-    fetch(process.env.REACT_APP_API_URL, {
+    fetch(process.env.REACT_APP_API_URL+`/${challengeUID}`, {
       method: "GET",
-      uid: challengeUID,
     })
-      .then(res => res.json())
-      .then(
-        (data) => {
-          //setIsValid(true);
-          console.log(data);
-          return true
+      //.then(res => res.json())
+      .then((res) => {
+        //setIsValid(true);
+        if (!res.ok) {
+          throw new Error('UID is invalid');
+          return false;
+        } else {
+          return true;
         }
-      )
+      })
       .catch((err) => {
-        console.log(err);
+        console.error("There has been a problem", err);
         return false;
         }
       )
