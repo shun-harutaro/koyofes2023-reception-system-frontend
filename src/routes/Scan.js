@@ -11,29 +11,33 @@ export const Scan = () => {
       if (result.getText().length !== 8) {
         setResult("無効なUIDです。");
       } else {
-        //setResult(result.getText());
-        (async() => {
-          const isValid = await checkUID(result);
-          if (isValid) {
-            navigate(`/temp/${result}`, { state: { isValid: true } });
-          } else {
-            navigate(`/`, { state: { isValid: false} });
-          }
-        })();
+        setResult('ok');
+        checkUID(result.getText());
       }
     },
+    paused: result === 'ok',
   });
 
-  const checkUID = (challengeUID) => {
-    fetch(process.env.REACT_APP_API_URL+`/${challengeUID}`, {
+  async function checkUID(scanedUID) {
+    const isValid = await checkUID(scanedUID);
+    console.log(isValid);
+    if (isValid) {
+      navigate(`/temp/${result}`, { state: { isValid: true } });
+    } else {
+      navigate(`/`, { state: {isValid: false} });
+    }
+  }
+
+  const getUidResponse = (challengeUID) => {
+    fetch(process.env.REACT_APP_API_URL+`/users/${challengeUID}`, {
       method: "GET",
-    })
+    }) 
       //.then(res => res.json())
       .then((res) => {
+        console.log({res});
         //setIsValid(true);
         if (!res.ok) {
           throw new Error('UID is invalid');
-          return false;
         } else {
           return true;
         }

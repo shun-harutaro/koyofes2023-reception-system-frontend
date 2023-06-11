@@ -30,18 +30,14 @@ export const Temp = () => {
             setErrors({...errors, content: ''});
         }
     }
-    /*
-    const sendTemp = () => {
+    const sendTemp = (data) => {
         fetch("url", {
             method: "POST",
             body: data
         }).then((res) => {
-            success
         }).catch((err) => {
-            error
         });
     }
-    */
    if (location.state !== null) {
     return (
         <div>
