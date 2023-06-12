@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useZxing } from "react-zxing";
 
@@ -8,24 +8,34 @@ export const Scan = () => {
   //const [isValid, setIsValid] = useState(false);
   const { ref } = useZxing({
     onResult(result) {
+      console.log(result);
       if (result.getText().length !== 8) {
         setResult("無効なUIDです。");
       } else {
         setResult('ok');
-        checkUID(result.getText());
+        const UID = result.getText();
+        checkUID(UID);
       }
     },
     paused: result === 'ok',
   });
-
+  
   async function checkUID(scanedUID) {
-    const isValid = await checkUID(scanedUID);
+    const isValid = await fetchUid(scanedUID);
     console.log(isValid);
     if (isValid) {
-      navigate(`/temp/${result}`, { state: { isValid: true } });
+      navigate(`/temp/${scanedUID}`, { state: { isValid: true } });
     } else {
       navigate(`/`, { state: {isValid: false} });
     }
+  }
+
+  const fetchUid = async (challengeUID) => {
+    const url = process.env.REACT_APP_API_URL+`/users/${challengeUID}`;
+    const res = await fetch(url, {method: "GET"});
+    const json = await res.json();
+    console.log("result: " + JSON.stringify(json));
+    return true;
   }
 
   const getUidResponse = (challengeUID) => {
@@ -48,6 +58,7 @@ export const Scan = () => {
         }
       )
   };
+
   return (
     <>
       <video ref={ref} />
