@@ -17,7 +17,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "mockapi": "docker run --rm -it -p 3001:4010 -v ${PWD}/:/tmp -P stoplight/prism:4 mock -h 0.0.0.0 --cors /tmp/backend/openapi.yaml",
+    "all": "run-s start mockapi"
   },
   "eslintConfig": {
     "extends": [
@@ -36,5 +38,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
   }
 }
