@@ -18,7 +18,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "mockapi": "docker run --rm -it -p 3001:4010 -v ${PWD}/:/tmp -P stoplight/prism:4 mock -h 0.0.0.0 --cors /tmp/backend/openapi.yaml",
+    "mockapi": "docker run --rm -it -p 3001:4010 -v ${PWD}/:/tmp -P stoplight/prism:4 mock -h 0.0.0.0 --cors /tmp/backend/koyofes2023-reception-system-openapi.yaml",
     "all": "run-s start mockapi"
   },
   "eslintConfig": {
