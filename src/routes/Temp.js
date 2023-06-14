@@ -5,21 +5,25 @@ export const Temp = () => {
     const params = useParams();
     const navigate = useNavigate();
     const location = useLocation();
-    console.log(location);
     const [ temp, setTemp ] = useState('');
     const [ errors, setErrors ] = useState({
         content: '',
         isError: true,
     });
+
     const handleTextChange = (event) => {
         const currentVal = event.target.value;
         setTemp(currentVal);
         formValidation(currentVal);
     };
-    const handleSubmit = () => {
+
+    const handleSubmit = async () => {
         console.log(temp);
+        const result = await sendTemp(temp);
+        console.log(result);
         navigate('/');
     };
+
     const formValidation = (value) => {
         const valueNum = parseFloat(value);
         if (!value.match(/^[0-9]+(\.[0-9]?)?$/)) {
@@ -30,14 +34,33 @@ export const Temp = () => {
             setErrors({...errors, content: ''});
         }
     }
-    const sendTemp = (data) => {
-        fetch("url", {
-            method: "POST",
-            body: data
-        }).then((res) => {
-        }).catch((err) => {
-        });
+
+    const createTempParams = (temp) => {
+        const dateToday = new Date();
+        const dateDay1 = new Date(process.env.REACT_APP_DATE_DAY1);
+        const dateDay2 = new Date(process.env.REACT_APP_DATE_DAY2);
+        if (dateToday - dateDay1 < 86400000) {
+            return { "temperature_day1": temp };
+        } else if (dateToday - dateDay2 < 86400000) {
+            return { "temperature_day2": temp };
+        } else {
+            return { "temperature_day1": temp};
+            /** TODO: error controll */
+        }
     }
+
+    const sendTemp = async (temperature) => {
+        const url = process.env.REACT_APP_API_URL+`/users/${params.uid}`
+        const temp_params = createTempParams(temperature);
+        const res = await fetch(url, {
+            method: "PUT",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(temp_params)
+        });
+        const json = await res.json();
+        return json;
+    }
+
    if (location.state !== null) {
     return (
         <div>
