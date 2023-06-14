@@ -18,7 +18,6 @@ export const Temp = () => {
     };
 
     const handleSubmit = async () => {
-        console.log(temp);
         const result = await sendTemp(temp);
         console.log(result);
         navigate('/');
