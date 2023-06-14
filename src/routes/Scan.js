@@ -38,27 +38,6 @@ export const Scan = () => {
     return true;
   }
 
-  const getUidResponse = (challengeUID) => {
-    fetch(process.env.REACT_APP_API_URL+`/users/${challengeUID}`, {
-      method: "GET",
-    }) 
-      //.then(res => res.json())
-      .then((res) => {
-        console.log({res});
-        //setIsValid(true);
-        if (!res.ok) {
-          throw new Error('UID is invalid');
-        } else {
-          return true;
-        }
-      })
-      .catch((err) => {
-        console.error("There has been a problem", err);
-        return false;
-        }
-      )
-  };
-
   return (
     <>
       <video ref={ref} />
