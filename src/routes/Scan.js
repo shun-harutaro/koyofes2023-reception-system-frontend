@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useZxing } from "react-zxing";
 
 export const Scan = () => {
   const navigate = useNavigate();
   const [result, setResult] = useState("");
-  //const [isValid, setIsValid] = useState(false);
   const { ref } = useZxing({
     onResult(result) {
       console.log(result);
@@ -20,13 +19,13 @@ export const Scan = () => {
     paused: result === 'ok',
   });
   
-  async function checkUID(scanedUID) {
+  const checkUID = async(scanedUID) => {
     const isValid = await fetchUid(scanedUID);
     console.log(isValid);
     if (isValid) {
       navigate(`/temp/${scanedUID}`, { state: { isValid: true } });
     } else {
-      navigate(`/`, { state: {isValid: false} });
+      navigate(`/`, { state: { isValid: false } });
     }
   }
 
