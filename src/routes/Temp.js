@@ -19,7 +19,7 @@ export const Temp = () => {
 
     const handleSubmit = async () => {
         const result = await sendTemp(temp);
-        console.log(result);
+        console.log(JSON.stringify(result));
         navigate('/');
     };
 
@@ -56,7 +56,9 @@ export const Temp = () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(temp_params)
         });
+        console.log(res);
         const json = await res.json();
+        //console.log('result:'+JSON.stringify(json));
         return json;
     }
 
