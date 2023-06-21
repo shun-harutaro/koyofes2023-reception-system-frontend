@@ -7,10 +7,12 @@
 git clone --recursive https://github.com/shun-harutaro/koyofes2023-reception-system-frontend.git
 ```
 2. `npm install` to install dependencies.
-3. Create .env.local and enter the base URL for backend server.
+3. Create .env.local and enter the base URL for backend server and event's dates.
 ```
 touch .env.local
 echo "REACT_APP_API_URL=http://localhost:3001"
+echo "REACT_APP_DATE_DAY1=yyyy/mm/dd"
+echo "REACT_APP_DATE_DAY2=yyyy/mm/dd"
 ```
 4. Start development server with `npm run all`
 ## Advanced Usage
