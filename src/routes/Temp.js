@@ -19,7 +19,8 @@ export const Temp = () => {
 
     const handleSubmit = async () => {
         /** @type {Boolean} */
-        const sendSuccess = await sendTemp(temp);
+        const tempFloat = parseFloat(temp)
+        const sendSuccess = await sendTemp(tempFloat);
         /** TODO: 送信結果によって遷移先のバナーを変える */
         if (sendSuccess) {
             console.log("send temperature successful");
@@ -41,15 +42,14 @@ export const Temp = () => {
         }
     }
 
-    const createTempParams = (temp) => {
-        const tempFloat = parseFloat(temp);
+    const createTempParams = (temperature) => {
         const dateToday = new Date();
         const dateDay1 = new Date(process.env.REACT_APP_DATE_DAY1);
         const dateDay2 = new Date(process.env.REACT_APP_DATE_DAY2);
         if (dateToday - dateDay1 < 86400000) {
-            return { "temperature_day1": tempFloat };
+            return { "temperature_day1": temperature };
         } else if (dateToday - dateDay2 < 86400000) {
-            return { "temperature_day2": tempFloat };
+            return { "temperature_day2": temperature };
         } else {
             console.error("受付時間外です")
             /** TODO: 日付が当日以外の場合のエラー処理 */
@@ -57,7 +57,7 @@ export const Temp = () => {
     }
     /**
      * 体温を送信する
-     * @param {String} temperature 
+     * @param {Number} temperature 
      * @returns {Boolean} 送信が成功したか否か
      */
     const sendTemp = async (temperature) => {
