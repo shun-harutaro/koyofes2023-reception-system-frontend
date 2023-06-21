@@ -21,7 +21,6 @@ export const Scan = () => {
   
   const checkUID = async(scanedUID) => {
     const isValid = await fetchUid(scanedUID);
-    console.log({isValid});
     if (isValid) {
       navigate(`/temp/${scanedUID}`, { state: { isValid: true } });
     } else {
