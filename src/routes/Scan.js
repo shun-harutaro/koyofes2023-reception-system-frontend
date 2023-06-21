@@ -8,7 +8,7 @@ export const Scan = () => {
   const { ref } = useZxing({
     onResult(result) {
       console.log(result);
-      if (result.getText().length !== 8) {
+      if (false/*result.getText().length !== 8*/) {
         setResult("無効なUIDです。");
       } else {
         setResult('ok');
@@ -30,10 +30,18 @@ export const Scan = () => {
 
   const fetchUid = async (challengeUID) => {
     const url = process.env.REACT_APP_API_URL+`/users/${challengeUID}`;
-    const res = await fetch(url, {method: "GET"});
-    const json = await res.json();
-    console.log("result: " + JSON.stringify(json));
-    return true;
+    try {
+      const res = await fetch(url, {method: "GET"});
+      if (!res.ok) {
+        throw new Error(res.statusText);
+      }
+      const json = await res.json();
+      console.log("result: " + JSON.stringify(json));
+      return true;
+    } catch (err) {
+      console.error("Error: " + err);
+      return false;
+    }
   }
 
   return (
