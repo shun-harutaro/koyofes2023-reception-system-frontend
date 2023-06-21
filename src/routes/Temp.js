@@ -18,9 +18,16 @@ export const Temp = () => {
     };
 
     const handleSubmit = async () => {
-        const result = await sendTemp(temp);
-        console.log(result);
-        navigate('/');
+        /** @type {Boolean} */
+        const sendSuccess = await sendTemp(temp);
+        /** TODO: 送信結果によって遷移先のバナーを変える */
+        if (sendSuccess) {
+            console.log("send temperature successful");
+            navigate('/');
+        } else {
+            console.log("sending temperature failed");
+            navigate('/');
+        }
     };
 
     const formValidation = (value) => {
@@ -35,29 +42,44 @@ export const Temp = () => {
     }
 
     const createTempParams = (temp) => {
+        const tempFloat = parseFloat(temp);
         const dateToday = new Date();
         const dateDay1 = new Date(process.env.REACT_APP_DATE_DAY1);
         const dateDay2 = new Date(process.env.REACT_APP_DATE_DAY2);
         if (dateToday - dateDay1 < 86400000) {
-            return { "temperature_day1": temp };
+            return { "temperature_day1": tempFloat };
         } else if (dateToday - dateDay2 < 86400000) {
-            return { "temperature_day2": temp };
+            return { "temperature_day2": tempFloat };
         } else {
-            return { "temperature_day1": temp};
-            /** TODO: error controll */
+            console.error("受付時間外です")
+            /** TODO: 日付が当日以外の場合のエラー処理 */
         }
     }
-
+    /**
+     * 体温を送信する
+     * @param {String} temperature 
+     * @returns {Boolean} 送信が成功したか否か
+     */
     const sendTemp = async (temperature) => {
         const url = process.env.REACT_APP_API_URL+`/users/${params.uid}`
         const temp_params = createTempParams(temperature);
-        const res = await fetch(url, {
-            method: "PUT",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(temp_params)
-        });
-        const json = await res.json();
-        return json;
+        try {
+            const res = await fetch(url, {
+                method: "PUT",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(temp_params)
+            });
+            if (!res.ok) {
+                throw new Error(res.statusText);
+            }
+            /** NOTE: バックエンドの仕様上JSONを返さない */
+            //const json = await res.json();
+            //console.log(json);
+            return true
+        } catch(err) {
+            console.error("Error: " + err);
+            return false;
+        }
     }
 
    if (location.state !== null) {

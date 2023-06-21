@@ -20,6 +20,7 @@ export const Scan = () => {
   });
   
   const checkUID = async(scanedUID) => {
+    /** @type {boolean} */
     const isValid = await fetchUid(scanedUID);
     if (isValid) {
       navigate(`/temp/${scanedUID}`, { state: { isValid: true } });
