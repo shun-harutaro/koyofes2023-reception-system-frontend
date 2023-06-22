@@ -5,7 +5,8 @@ import Button from '@mui/material/Button'
 export const Home = () => {
     return (
         <div>
-            <p>Top page</p>
+            <h1>ホーム</h1>
+            <p>下のボタンを押して、QRコードを読み込んでください</p>
             <Button
                 variant="contained"
                 color="primary"
