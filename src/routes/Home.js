@@ -5,9 +5,14 @@ import Button from '@mui/material/Button'
 export const Home = () => {
     return (
         <div>
-            <p>Home</p>
-            <Button variant="ccontained">
-                <Link to="/scan">QRコードをスキャン</Link>
+            <p>Top page</p>
+            <Button
+                variant="contained"
+                color="primary"
+                component={Link}
+                to="/scan"
+            >
+                 QRコードをスキャン
             </Button>
         </div>
     )

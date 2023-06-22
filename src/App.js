@@ -1,4 +1,5 @@
 import React from "react";
+import { ButtonAppBar } from "./components/ButtonAppBar";
 import { Routes, Route } from "react-router-dom";
 import { Home } from "./routes/Home";
 import { Scan } from "./routes/Scan";
@@ -8,7 +9,7 @@ import { Temp } from "./routes/Temp";
 const App = () => {
   return (
     <div className="App">
-      <h1>こうよう祭</h1>
+      <ButtonAppBar />
       <Routes>
         <Route path="/" element={ <Home /> } />
         <Route path="/scan" element={ <Scan /> } />
