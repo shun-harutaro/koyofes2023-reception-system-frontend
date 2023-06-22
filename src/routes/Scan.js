@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useZxing } from "react-zxing";
+import { Alert } from "@mui/material";
 
 export const Scan = () => {
   const navigate = useNavigate();
@@ -47,6 +48,7 @@ export const Scan = () => {
 
   return (
     <>
+    <Alert severity="error">無効なQRコードです！</Alert>
       <video ref={ref} />
       <p>
         <span>Last result:</span>
