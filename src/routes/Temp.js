@@ -73,9 +73,8 @@ export const Temp = () => {
             if (!res.ok) {
                 throw new Error(res.statusText);
             }
-            /** NOTE: バックエンドの仕様上JSONを返さない */
-            //const json = await res.json();
-            //console.log(json);
+            const json = await res.json();
+            console.log(json);
             return true
         } catch(err) {
             console.error("Error: " + err);
