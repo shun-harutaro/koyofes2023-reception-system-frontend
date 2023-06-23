@@ -11,7 +11,7 @@ import { Temp } from "./routes/Temp";
 const App = () => {
   return (
     <div className="App">
-      <ButtonAppBar />
+      <ButtonAppBar title="こうよう祭受付システム" />
       <div css={app}>
         <Routes>
           <Route path="/" element={ <Home /> } />

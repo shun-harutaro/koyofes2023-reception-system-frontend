@@ -103,7 +103,6 @@ export const Temp = () => {
                 variant="contained" 
                 type="submit"
                 onClick={handleSubmit}
-                sx={{}}
             >
                 体温を送信する
             </Button>
