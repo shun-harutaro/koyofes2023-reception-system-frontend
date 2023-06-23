@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { Button, Grid, TextField } from "@mui/material";
 
 export const Temp = () => {
     const params = useParams();
@@ -8,7 +9,7 @@ export const Temp = () => {
     const [ temp, setTemp ] = useState('');
     const [ errors, setErrors ] = useState({
         content: '',
-        isError: true,
+        isError: false,
     });
 
     const handleTextChange = (event) => {
@@ -34,11 +35,11 @@ export const Temp = () => {
     const formValidation = (value) => {
         const valueNum = parseFloat(value);
         if (!value.match(/^[0-9]+(\.[0-9]?)?$/)) {
-            setErrors({...errors, content: '不適切な形式です'});
+            setErrors({content: '不適切な形式です', isError: true});
         } else if (valueNum < 34 || 41 < valueNum) {
-            setErrors({...errors, content: '体温は34から41の範囲で入力してください'})
+            setErrors({content: '体温は34から41の範囲で入力してください', isError: true})
         } else {
-            setErrors({...errors, content: ''});
+            setErrors({content: '', isError: false});
         }
     }
 
@@ -85,15 +86,33 @@ export const Temp = () => {
    if (location.state !== null) {
     return (
         <div>
-            <p>UID: { params.uid }</p>
-            <p>{ errors.content }</p>
-            <input type="text" value={temp} onChange={handleTextChange} />
-            <button onClick={handleSubmit}>submit</button>
+            <h1>体温入力画面</h1>
+            <Grid sx={{display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
+            <TextField 
+                error={errors.isError}
+                type="decimal"
+                value={temp}
+                id="outlined-basic" 
+                label= "体温を入力" 
+                variant="outlined"
+                helperText={errors.content}
+                onChange={handleTextChange} 
+                margin="normal"
+            />
+            <Button 
+                variant="contained" 
+                type="submit"
+                onClick={handleSubmit}
+                sx={{}}
+            >
+                体温を送信する
+            </Button>
+            </Grid>
         </div>
     )
    } else {
     return (
-        <p>UID is not valid</p>
+        <p>不正な画面遷移です</p>
     )
    }
 }
