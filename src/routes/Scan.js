@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useZxing } from "react-zxing";
+import { Alert } from "@mui/material";
 
 export const Scan = () => {
   const navigate = useNavigate();
@@ -8,6 +9,7 @@ export const Scan = () => {
   const { ref } = useZxing({
     onResult(result) {
       console.log(result);
+      /** NOTE: バリデーションを有効にさせる */
       if (false/*result.getText().length !== 8*/) {
         setResult("無効なUIDです。");
       } else {
@@ -47,10 +49,13 @@ export const Scan = () => {
 
   return (
     <>
+    <div>
+     {result !== 'ok' && <Alert severity="error">無効なQRコードです！</Alert>}
+    </div>
       <video ref={ref} />
       <p>
-        <span>Last result:</span>
-        <span>{result}</span>
+        {/*<span>Last result:</span>
+        <span>{result}</span>*/}
       </p>
     </>
   );
