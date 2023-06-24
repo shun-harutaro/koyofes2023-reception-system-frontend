@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Button, Grid, TextField } from "@mui/material";
+import AlertDialog from "../components/AlertDialog";
 
 export const Temp = () => {
     const params = useParams();
@@ -89,7 +90,7 @@ export const Temp = () => {
             <Grid sx={{display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
             <TextField 
                 error={errors.isError}
-                type="decimal"
+                inputMode="decimal"
                 value={temp}
                 id="outlined-basic" 
                 label= "体温を入力" 
@@ -105,6 +106,7 @@ export const Temp = () => {
             >
                 体温を送信する
             </Button>
+            <AlertDialog />
             </Grid>
         </div>
     )
