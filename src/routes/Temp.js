@@ -1,6 +1,7 @@
 import React, { useState } from "react"
-import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Button, Grid, TextField } from "@mui/material";
+import AlertDialog from "../components/AlertDialog";
 
 export const Temp = () => {
     const params = useParams();
@@ -105,15 +106,7 @@ export const Temp = () => {
             >
                 体温を送信する
             </Button>
-            <Button
-                sx={{m: 1}}
-                variant="outlined"
-                color="error"
-                component={Link}
-                to="/"
-            >
-                取り消し（ホームに戻る）
-            </Button>
+            <AlertDialog />
             </Grid>
         </div>
     )
