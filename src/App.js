@@ -10,7 +10,7 @@ import { Temp } from "./routes/Temp";
 
 const App = () => {
   return (
-    <div css={body}>
+    <div>
       <ButtonAppBar title="こうよう祭受付システム" />
       <div css={app}>
         <Routes>
@@ -23,9 +23,6 @@ const App = () => {
     </div>
   )
 }
-
-const body = css`
-`
 
 const app = css`
   text-align: center;
