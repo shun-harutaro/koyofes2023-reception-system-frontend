@@ -1,7 +1,9 @@
+/** @jsxImportSource @emotion/react */
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { css } from "@emotion/react"
+import { useNavigate, Link } from "react-router-dom";
 import { useZxing } from "react-zxing";
-import { Alert } from "@mui/material";
+import { Alert, Button } from "@mui/material";
 
 export const Scan = () => {
   const navigate = useNavigate();
@@ -52,11 +54,26 @@ export const Scan = () => {
     <div>
      {result !== 'ok' && <Alert severity="error">無効なQRコードです！</Alert>}
     </div>
-      <video ref={ref} />
-      <p>
-        {/*<span>Last result:</span>
-        <span>{result}</span>*/}
-      </p>
+    <div css={videoWrapper} >
+      <video ref={ref} css={videoStyle} />
+      <Button
+        variant="contained"
+        color="primary"
+        component={Link}
+        to="/"
+      >
+        ホームに戻る
+      </Button>
+    </div>
     </>
   );
 }
+
+const videoWrapper = css`
+  height: 100%;
+`
+
+const videoStyle = css`
+  margin: 5px;
+  max-height: 80vh;
+`

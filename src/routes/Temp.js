@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
 import { Button, Grid, TextField } from "@mui/material";
 
 export const Temp = () => {
@@ -89,7 +89,7 @@ export const Temp = () => {
             <Grid sx={{display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
             <TextField 
                 error={errors.isError}
-                type="decimal"
+                inputMode="decimal"
                 value={temp}
                 id="outlined-basic" 
                 label= "体温を入力" 
@@ -104,6 +104,15 @@ export const Temp = () => {
                 onClick={handleSubmit}
             >
                 体温を送信する
+            </Button>
+            <Button
+                sx={{m: 1}}
+                variant="outlined"
+                color="error"
+                component={Link}
+                to="/"
+            >
+                取り消し（ホームに戻る）
             </Button>
             </Grid>
         </div>
