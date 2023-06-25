@@ -7,20 +7,19 @@ import { Alert, Button } from "@mui/material";
 
 export const Scan = () => {
   const navigate = useNavigate();
-  const [result, setResult] = useState("");
+  const [isError, setIsError] = useState(false)
   const { ref } = useZxing({
     onResult(result) {
       console.log(result);
-      /** NOTE: バリデーションを有効にさせる */
-      if (false/*result.getText().length !== 8*/) {
-        setResult("無効なUIDです。");
+      if (result.getText().length !== 8) {
+        setIsError(true);
       } else {
-        setResult('ok');
+        setIsError(false);
         const UID = result.getText();
         checkUID(UID);
       }
     },
-    paused: result === 'ok',
+    //paused: result === 'ok',
   });
   
   const checkUID = async(scanedUID) => {
@@ -52,7 +51,7 @@ export const Scan = () => {
   return (
     <>
     <div>
-     {result !== 'ok' && <Alert severity="error">無効なQRコードです！</Alert>}
+     { isError && <Alert severity="error">無効なQRコードです！</Alert> }
     </div>
     <div css={videoWrapper} >
       <video ref={ref} css={videoStyle} />
