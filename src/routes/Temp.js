@@ -1,6 +1,6 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { Button, Grid, TextField } from "@mui/material";
+import { Button, Grid, TextField, Alert } from "@mui/material";
 import AlertDialog from "../components/AlertDialog";
 
 export const Temp = () => {
@@ -8,7 +8,9 @@ export const Temp = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [ temp, setTemp ] = useState('');
-    const [ errors, setErrors ] = useState({
+    const [ date, setDate ] = useState(0); // day1:1, day2:2, other:0
+    const [ formDisabled, setFormDisabled ] = useState(false)
+    const [ validationError, setValidationError ] = useState({
         content: '',
         isError: false,
     });
@@ -36,25 +38,37 @@ export const Temp = () => {
     const formValidation = (value) => {
         const valueNum = parseFloat(value);
         if (!value.match(/^[0-9]+(\.[0-9]?)?$/)) {
-            setErrors({content: '不適切な形式です', isError: true});
+            setValidationError({content: '不適切な形式です', isError: true});
         } else if (valueNum < 34 || 41 < valueNum) {
-            setErrors({content: '体温は34から41の範囲で入力してください', isError: true})
+            setValidationError({content: '体温は34から41の範囲で入力してください', isError: true})
         } else {
-            setErrors({content: '', isError: false});
+            setValidationError({content: '', isError: false});
         }
     }
 
-    const createTempParams = (temperature) => {
+    // レンダリング時に時間検証
+    useEffect(() => {
         const dateToday = new Date();
         const dateDay1 = new Date(process.env.REACT_APP_DATE_DAY1);
         const dateDay2 = new Date(process.env.REACT_APP_DATE_DAY2);
         if (dateToday - dateDay1 < 86400000) {
-            return { "temperature_day1": temperature };
+            setDate(1);
         } else if (dateToday - dateDay2 < 86400000) {
+            setDate(2);
+        } else {
+            setDate(0);
+            setFormDisabled(true);
+        }
+    }, [])
+
+    const createTempParams = (temperature) => {
+        if (date === 1) {
+            return { "temperature_day1": temperature };
+        } else if (date === 2) {
             return { "temperature_day2": temperature };
         } else {
-            console.error("受付時間外です")
-            /** TODO: 日付が当日以外の場合のエラー処理 */
+            console.error("受付時間外です");
+            return {};
         }
     }
     /**
@@ -86,20 +100,23 @@ export const Temp = () => {
    if (location.state !== null) {
     return (
         <div>
+            { formDisabled && <Alert severity="error">エラー：受付時間外です。</Alert> }
             <h1>体温入力画面</h1>
             <Grid sx={{display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
             <TextField 
-                error={errors.isError}
+                error={validationError.isError}
+                disabled={formDisabled}
                 inputMode="decimal"
                 value={temp}
                 id="outlined-basic" 
                 label= "体温を入力" 
                 variant="outlined"
-                helperText={errors.content}
+                helperText={validationError.content}
                 onChange={handleTextChange} 
                 margin="normal"
             />
             <Button 
+                disabled={validationError.isError || formDisabled }
                 variant="contained" 
                 type="submit"
                 onClick={handleSubmit}
