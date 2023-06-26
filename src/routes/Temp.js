@@ -26,9 +26,9 @@ export const Temp = () => {
         const tempFloat = parseFloat(temp)
         const sendSuccess = await sendTemp(tempFloat);
         if (sendSuccess) {
-            navigate('/', { state: { wasSuccess: true } });
+            navigate('/', { state: { result: 'success' } });
         } else {
-            navigate('/', { state: { wasSuccess: false } });
+            navigate('/', { state: { result: 'failed' } });
         }
     };
 

@@ -5,13 +5,13 @@ import { Alert } from "@mui/material"
 
 export const Home = () => {
     const location = useLocation();
-    const prevProcedureWasSuccess = location.state.wasSuccess
+    const prevProcedureResult = location.state ? location.state.result : '';
     return (
         <div>
-            { prevProcedureWasSuccess && <Alert severity="success">
+            { prevProcedureResult === 'success' && <Alert severity="success">
                 体温は正常に送信されました。
             </Alert> }
-            { !prevProcedureWasSuccess && <Alert severity="error">
+            { prevProcedureResult === 'failed' && <Alert severity="error">
                 体温の送信に失敗しました。
             </Alert> }
             <h1>ホーム</h1>
