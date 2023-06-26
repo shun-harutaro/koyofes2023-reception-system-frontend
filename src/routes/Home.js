@@ -1,10 +1,19 @@
 import React from "react"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import Button from '@mui/material/Button'
+import { Alert } from "@mui/material"
 
 export const Home = () => {
+    const location = useLocation();
+    const prevProcedureWasSuccess = location.state.wasSuccess
     return (
         <div>
+            { prevProcedureWasSuccess && <Alert severity="success">
+                体温は正常に送信されました。
+            </Alert> }
+            { !prevProcedureWasSuccess && <Alert severity="error">
+                体温の送信に失敗しました。
+            </Alert> }
             <h1>ホーム</h1>
             <p>下のボタンを押して、QRコードを読み込んでください</p>
             <Button
