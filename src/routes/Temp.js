@@ -25,13 +25,10 @@ export const Temp = () => {
         /** @type {Boolean} */
         const tempFloat = parseFloat(temp)
         const sendSuccess = await sendTemp(tempFloat);
-        /** TODO: 送信結果によって遷移先のバナーを変える */
         if (sendSuccess) {
-            console.log("send temperature successful");
-            navigate('/');
+            navigate('/', { state: { wasSuccess: true } });
         } else {
-            console.log("sending temperature failed");
-            navigate('/');
+            navigate('/', { state: { wasSuccess: false } });
         }
     };
 
