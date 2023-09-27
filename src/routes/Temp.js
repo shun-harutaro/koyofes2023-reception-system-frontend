@@ -47,7 +47,9 @@ export const Temp = () => {
     useEffect(() => {
         const dateToday = new Date();
         const dateDay1 = new Date(process.env.REACT_APP_DATE_DAY1);
+        console.log({dateDay1});
         const dateDay2 = new Date(process.env.REACT_APP_DATE_DAY2);
+        console.log({dateDay2});
         if (dateToday - dateDay1 < 86400000) {
             setDate(1);
         } else if (dateToday - dateDay2 < 86400000) {
@@ -70,7 +72,7 @@ export const Temp = () => {
     }
     /**
      * 体温を送信する
-     * @param {Number} temperature 
+     * @param {Number} temperature
      * @returns {Boolean} 送信が成功したか否か
      */
     const sendTemp = async (temperature) => {
@@ -100,21 +102,21 @@ export const Temp = () => {
             { formDisabled && <Alert severity="error">エラー：受付時間外です。</Alert> }
             <h1>体温入力画面</h1>
             <Grid sx={{display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
-            <TextField 
+            <TextField
                 error={validationError.isError}
                 disabled={formDisabled}
                 inputMode="decimal"
                 value={temp}
-                id="outlined-basic" 
-                label= "体温を入力" 
+                id="outlined-basic"
+                label= "体温を入力"
                 variant="outlined"
                 helperText={validationError.content}
-                onChange={handleTextChange} 
+                onChange={handleTextChange}
                 margin="normal"
             />
-            <Button 
+            <Button
                 disabled={validationError.isError || formDisabled }
-                variant="contained" 
+                variant="contained"
                 type="submit"
                 onClick={handleSubmit}
             >
