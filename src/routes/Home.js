@@ -9,7 +9,7 @@ export const Home = () => {
     return (
         <div>
             { prevProcedureResult === 'success' && <Alert severity="success">
-                体温は正常に送信されました。
+                {location.state.name}さんの体温は正常に送信されました。
             </Alert> }
             { prevProcedureResult === 'failed' && <Alert severity="error">
                 体温の送信に失敗しました。
