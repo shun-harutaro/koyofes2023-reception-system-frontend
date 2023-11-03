@@ -26,7 +26,7 @@ export const Temp = () => {
         const tempFloat = parseFloat(temp)
         const sendSuccess = await sendTemp(tempFloat);
         if (sendSuccess) {
-            navigate('/', { state: { result: 'success' } });
+            navigate('/', { state: { result: 'success', name: location.state.name } });
         } else {
             navigate('/', { state: { result: 'failed' } });
         }
@@ -101,6 +101,7 @@ export const Temp = () => {
         <div>
             { formDisabled && <Alert severity="error">エラー：受付時間外です。</Alert> }
             <h1>体温入力画面</h1>
+            <p>登録名：{location.state.name}さん</p>
             <Grid sx={{display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
             <TextField
                 error={validationError.isError}
