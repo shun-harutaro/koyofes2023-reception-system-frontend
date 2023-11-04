@@ -9,7 +9,10 @@ export const Temp = () => {
     const location = useLocation();
     const [ temp, setTemp ] = useState('');
     const [ date, setDate ] = useState(0); // day1:1, day2:2, other:0
-    const [ formDisabled, setFormDisabled ] = useState(false)
+    const [ formStatus, setFormStatus ] = useState({
+        disabled: false,
+        message: ""
+    })
     const [ validationError, setValidationError ] = useState({
         content: '',
         isError: false,
@@ -50,13 +53,22 @@ export const Temp = () => {
         console.log({dateDay1});
         const dateDay2 = new Date(process.env.REACT_APP_DATE_DAY2);
         console.log({dateDay2});
+        console.log(location.state.day1or2);
         if (dateToday - dateDay1 < 86400000) {
             setDate(1);
+            if (location.state.day1or2 === "day2") {
+                setDate(0);
+                setFormStatus({disabled: true, message: "二日目のみの登録です。"});
+            }
         } else if (dateToday - dateDay2 < 86400000) {
             setDate(2);
+            if (location.state.day1or2 === "day1") {
+                setDate(0);
+                setFormStatus({disabled: true, message: "一日目のみの登録です。"});
+            }
         } else {
             setDate(0);
-            setFormDisabled(true);
+            setFormStatus({disabled: true, message: "受付時間外です。"});
         }
     }, [])
 
@@ -99,13 +111,13 @@ export const Temp = () => {
    if (location.state !== null) {
     return (
         <div>
-            { formDisabled && <Alert severity="error">エラー：受付時間外です。</Alert> }
+            { formStatus.disabled && <Alert severity="error">エラー：{formStatus.message}</Alert> }
             <h1>体温入力画面</h1>
             <p>登録名：{location.state.name}さん</p>
             <Grid sx={{display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
             <TextField
                 error={validationError.isError}
-                disabled={formDisabled}
+                disabled={formStatus.disabled}
                 inputMode="decimal"
                 value={temp}
                 id="outlined-basic"
@@ -116,7 +128,7 @@ export const Temp = () => {
                 margin="normal"
             />
             <Button
-                disabled={validationError.isError || formDisabled }
+                disabled={validationError.isError || formStatus.disabled }
                 variant="contained"
                 type="submit"
                 onClick={handleSubmit}

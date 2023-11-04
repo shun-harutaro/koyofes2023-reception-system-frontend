@@ -24,9 +24,13 @@ export const Scan = () => {
   
   const checkUID = async(scanedUID) => {
     /** @type {boolean} */
-    const userName = await fetchUid(scanedUID);
-    if (userName) {
-      navigate(`/temp/${scanedUID}`, { state: { isValid: true, name: userName } });
+    const userData = await fetchUid(scanedUID);
+    if (userData) {
+      let day1or2 = "";
+      if (userData.attends_day1 && !userData.attends_day2) day1or2 = "day1";
+      if (!userData.attends_day1 && userData.attends_day2) day1or2 = "day2";
+      if (userData.attends_day1 && userData.attends_day2) day1or2 = "both";
+      navigate(`/temp/${scanedUID}`, { state: { isValid: true, name: userData.name, day1or2: day1or2 } });
     } else {
       navigate(`/`, { state: { isValid: false } });
     }
@@ -41,7 +45,7 @@ export const Scan = () => {
       }
       const json = await res.json();
       console.log("result: " + JSON.stringify(json));
-      return json.name;
+      return json;
     } catch (err) {
       console.error("Error: " + err);
       return null;
